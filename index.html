@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <title>Bank APP</title>
+    </head>
+
+    <body>
+        <div>
+            <input type = "text" id ="amount">
+            <p id = "balance"></p>
+            <button id = "deposit" name="deposit">Deposit</button>
+            <button id = "withdraw" name="withdraw">Withdraw</button>
+        </div>
+
+		<script src = "https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.34/dist/web3.min.js"></script>
+        <script src = "https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+		<script src = "./web3.min.js"></script>
+
+
+        <script>
+			var contract;
+
+			$(document).ready(function() {
+				web3 = new Web3(web3.currentProvider);
+
+				var abi = [{"constant":true,"inputs":[],"name":"getBalance","outputs":[{"name":"","type":"int256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"amt","type":"int256"}],"name":"deposite","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"amt","type":"int256"}],"name":"withdraw","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"}];
+
+				var address = "0xaCFCf4c6fd69195e687a2D86A2d0EEEfD7bcf840";
+
+				contract = new web3.eth.Contract(abi,address);
+
+				contract.methods.getBalance().call().then(function(bal) {
+					$('#balance').html(bal);
+				})
+				console.log("Hi Vasanth!");
+			})
+
+			$('#deposit').click(function() {
+				var amt=0;
+				amt = parseInt($('#amount').val());
+				console.log("kumar");
+
+				
+				web3.eth.getAccounts().then(function(accounts) {
+					console.log("Hi Vasanth!");
+					var acc = accounts[0];
+					console.log(acc);
+					return contract.methods.deposite(amt).send({from: acc});
+				}).catch(function(tx) {
+					console.log(tx);
+				})
+			})
+
+			$('#withdraw').click(function() {
+				var amt=0;
+				amt = parseInt($('#amount').val());
+
+				web3.eth.getAccounts().then(function(accounts) {
+					acc = accounts;
+					return contract.methods.withdraw(amt).send({from: acc[0]});
+				}).catch(function(tx) {
+					console.log(tx);
+				})
+			})
+
+		</script>
+
+    </body>
+</html>
