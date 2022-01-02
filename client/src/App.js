@@ -70,6 +70,7 @@ class App extends Component {
     var amt = amount;
     var acc = accounts[0];
     await contractBank.methods.deposite(amt).send({from: acc});
+    window.location.reload(false);
   };
 
   withdraw = async () => {
@@ -78,6 +79,7 @@ class App extends Component {
     var acc = accounts[0];
     console.log(acc);
     await contractBank.methods.withdraw(amt).send({from: acc});
+    window.location.reload(false);
   }
 
   render() {
